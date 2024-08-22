@@ -16,34 +16,36 @@ class PDFTool:
         for widget in self.root.winfo_children():
             widget.destroy()
 
-        # Back button
-        back_button = tk.Button(self.root, text="ホームに戻る", command=self.go_back_callback)
-        back_button.pack(pady=5)
+        # Back button with modern styling
+        back_button = tk.Button(self.root, text="ホームに戻る", command=self.go_back_callback,
+                                font=("Arial", 12), bg="#007BFF", fg="white", relief=tk.FLAT)
+        back_button.pack(pady=10)
 
-        # Set up your PDF encryption/decryption GUI components
-        label = tk.Label(self.root, text="PDF 暗号化/復号ツール", font=("MS Mincho", 18, "bold"))
-        label.pack(pady=20)
+        # Title with modern font and style
+        label = tk.Label(self.root, text="PDF 暗号化/復号ツール", font=("Arial", 24, "bold"))
+        label.pack(pady=30)
 
-        # Password input fields
-        tk.Label(self.root, text="USER パスワード:").pack()
-        self.user_pass_entry = tk.Entry(self.root, show="*", width=30)
-        self.user_pass_entry.pack()
+        # Password input labels and fields
+        tk.Label(self.root, text="USER パスワード:", font=("Arial", 12)).pack(pady=5)
+        self.user_pass_entry = tk.Entry(self.root, show="*", width=30, font=("Arial", 12))
+        self.user_pass_entry.pack(pady=5)
 
-        tk.Label(self.root, text="USER パスワード確認:").pack()
-        self.confirm_user_pass_entry = tk.Entry(self.root, show="*", width=30)
-        self.confirm_user_pass_entry.pack()
+        tk.Label(self.root, text="USER パスワード確認:", font=("Arial", 12)).pack(pady=5)
+        self.confirm_user_pass_entry = tk.Entry(self.root, show="*", width=30, font=("Arial", 12))
+        self.confirm_user_pass_entry.pack(pady=5)
 
-        # Encrypt button
-        encrypt_button = tk.Button(self.root, text="暗号化", command=self.encrypt_button_clicked)
-        encrypt_button.pack(pady=5)
+        # Encrypt and Decrypt buttons with modern styling
+        encrypt_button = tk.Button(self.root, text="暗号化", command=self.encrypt_button_clicked,
+                                   font=("Arial", 12), bg="#28a745", fg="white", relief=tk.FLAT)
+        encrypt_button.pack(pady=10)
 
-        # Decrypt button
-        decrypt_button = tk.Button(self.root, text="復号", command=self.decrypt_button_clicked)
-        decrypt_button.pack(pady=5)
+        decrypt_button = tk.Button(self.root, text="復号", command=self.decrypt_button_clicked,
+                                   font=("Arial", 12), bg="#ffc107", fg="black", relief=tk.FLAT)
+        decrypt_button.pack(pady=10)
 
-        # Message console
-        self.message_console = scrolledtext.ScrolledText(self.root, wrap=tk.WORD, height=10, state=tk.DISABLED)
-        self.message_console.pack(pady=10)
+        # Message console for showing messages
+        self.message_console = scrolledtext.ScrolledText(self.root, wrap=tk.WORD, height=10, state=tk.DISABLED, font=("Arial", 10))
+        self.message_console.pack(pady=20)
 
     def encrypt_button_clicked(self):
         file_paths = self.select_files()

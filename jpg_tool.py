@@ -13,29 +13,31 @@ class JPGTool:
         self.setup_jpg_tool()
 
     def setup_jpg_tool(self):
-        # Clear the screen for transitions
+                # Clear the screen for transitions
         for widget in self.root.winfo_children():
             widget.destroy()
 
-        # Back button
-        back_button = tk.Button(self.root, text="ホームに戻る", command=self.go_back_callback)
-        back_button.pack(pady=5)
+        # Back button with modern styling
+        back_button = tk.Button(self.root, text="ホームに戻る", command=self.go_back_callback,
+                                font=("Arial", 12), bg="#007BFF", fg="white", relief=tk.FLAT)
+        back_button.pack(pady=10)
 
-        label = tk.Label(self.root, text="JPG 名前変更ツール", font=("MS Mincho", 18, "bold"))
-        label.pack(pady=20)
+        # Title with modern font and style
+        label = tk.Label(self.root, text="JPG 名前変更ツール", font=("Arial", 24, "bold"))
+        label.pack(pady=30)
 
-        # Select folder button
-        self.label = tk.Label(self.root, text="JPGファイルが含まれるフォルダーを選択してください:")
-        self.label.pack(pady=10)
+        # Folder selection label and button
+        self.label = tk.Label(self.root, text="JPGファイルが含まれるフォルダーを選択してください:", font=("Arial", 12))
+        self.label.pack(pady=20)
 
-        self.browse_button = tk.Button(self.root, text="参照", command=self.browse_folder)
-        self.browse_button.pack(pady=5)
+        self.browse_button = tk.Button(self.root, text="参照", command=self.browse_folder,
+                                       font=("Arial", 12), bg="#28a745", fg="white", relief=tk.FLAT)
+        self.browse_button.pack(pady=10)
 
-        self.start_button = tk.Button(self.root, text="処理開始", command=self.start_processing)
-        self.start_button.pack(pady=5)
+        self.start_button = tk.Button(self.root, text="処理開始", command=self.start_processing,
+                                      font=("Arial", 12), bg="#ffc107", fg="black", relief=tk.FLAT)
+        self.start_button.pack(pady=10)
         self.start_button.config(state=tk.DISABLED)
-
-        self.folder_path = ""
 
     def browse_folder(self):
         self.folder_path = filedialog.askdirectory()
