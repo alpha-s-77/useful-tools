@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ツール説明書</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>ツール説明書</h1>
+    </header>
+    <main>
+        <section>
+            <h2>PDFファイルの暗号化・復号ツール</h2>
+            <p>このツールでは、PDFファイルの暗号化および復号を行うことができます。</p>
+            <h3>使用方法:</h3>
+            <ol>
+                <li><strong>PDFファイルの選択:</strong> 「暗号化」または「復号」ボタンをクリックし、処理したいPDFファイルを選択します。</li>
+                <li><strong>パスワードの入力:</strong> USER パスワードを入力し、確認のために再度パスワードを入力します。</li>
+                <li><strong>処理の実行:</strong> 「暗号化」ボタンまたは「復号」ボタンをクリックして、処理を開始します。</li>
+            </ol>
+            <p><strong>入力ファイル形式:</strong> 任意のPDFファイル (.pdf)</p>
+            <p><strong>出力形式:</strong></p>
+            <ul>
+                <li>暗号化時: ファイル名は <code>ANY_encrypted.pdf</code> (例: <code>foo.pdf → foo_encrypted.pdf</code>)</li>
+                <li>復号時: ファイル名は <code>ANY_decrypted.pdf</code> (例: <code>foo.pdf → foo_decrypted.pdf</code>)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>JPGファイル名変更ツール</h2>
+            <p>このツールでは、JPGファイルの名前を変更することができます。</p>
+            <h3>使用方法:</h3>
+            <ol>
+                <li><strong>フォルダーの選択:</strong> 「参照」ボタンをクリックし、JPGファイルが含まれるフォルダーを選択します。</li>
+                <li><strong>処理の開始:</strong> 「処理開始」ボタンをクリックして、ファイル名変更処理を開始します。</li>
+            </ol>
+            <p><strong>入力ファイル形式:</strong> 任意のJPGファイル (.jpg)</p>
+            <p><strong>出力形式:</strong> ファイル名は <code>[通し番号] MMDD-hhmmss.jpg</code> の形式になります。</p>
+            <p>例: <code>foo.jpg → [0] 0101-231034.jpg</code></p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 ツール説明書</p>
+    </footer>
+</body>
+</html>

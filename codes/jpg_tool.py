@@ -30,7 +30,7 @@ class JPGTool:
         self.label = tk.Label(self.root, text="JPGファイルが含まれるフォルダーを選択してください:", font=("Arial", 12))
         self.label.pack(pady=20)
 
-        self.browse_button = tk.Button(self.root, text="参照", command=self.browse_folder,
+        self.browse_button = tk.Button(self.root, text="　参照　", command=self.browse_folder,
                                        font=("Arial", 12), bg="#28a745", fg="white", relief=tk.FLAT)
         self.browse_button.pack(pady=10)
 
@@ -46,6 +46,50 @@ class JPGTool:
         else:
             self.start_button.config(state=tk.DISABLED)
 
+    def pre_process_files(self):
+        c = 0
+        errors = []
+
+        # Match files with any case variation of ".jpg"
+        for filename in tqdm(Path(self.folder_path).glob("*.jp*g"), desc="事前処理中"):
+            exif = self.get_exif_of_image(filename)
+            if "DateTimeOriginal" in exif:
+                try:
+                    new_name = Path(filename).with_name(
+                        datetime.datetime.strptime(exif["DateTimeOriginal"], "%Y:%m:%d %H:%M:%S").strftime("%m%d-%H%M%S")
+                    )
+                    new_name_with_id = Path(self.folder_path) / f"{new_name}-{c}.jpg"  # Always use .jpg as output
+                    os.rename(filename, new_name_with_id)
+                    c += 1
+                except Exception as e:
+                    errors.append(f"[エラー] {filename}: {str(e)}")
+            else:
+                pass
+
+        return errors
+
+    def rename_files(self):
+        c = 0
+        errors = []
+
+        # Match files with any case variation of ".jpg"
+        for filename in tqdm(Path(self.folder_path).glob("*.jp*g"), desc="ファイル名変更中"):
+            exif = self.get_exif_of_image(filename)
+            if "DateTimeOriginal" in exif:
+                try:
+                    new_name = Path(filename).with_name(
+                        datetime.datetime.strptime(exif["DateTimeOriginal"], "%Y:%m:%d %H:%M:%S").strftime("%m%d-%H%M%S.jpg")
+                    )
+                    new_name_with_id = Path(self.folder_path) / f"[{c}] {new_name.name}"
+                    os.rename(filename, new_name_with_id)
+                    c += 1
+                except Exception as e:
+                    errors.append(f"[エラー] {filename}: {str(e)}")
+            else:
+                errors.append(f"[警告] {filename}: EXIFデータが見つかりません")
+
+        return errors
+
     def start_processing(self):
         if not self.folder_path:
             messagebox.showwarning("警告", "フォルダーを選択してください。")
@@ -55,44 +99,6 @@ class JPGTool:
         rename_errors = self.rename_files()
 
         self.show_results(pre_process_errors + rename_errors)
-
-    def pre_process_files(self):
-        c = 0
-        errors = []
-
-        for filename in tqdm(Path(self.folder_path).glob("*.JPG"), desc="事前処理中"):
-            exif = self.get_exif_of_image(filename)
-            if "DateTime" in exif:
-                c += 1
-            else:
-                errors.append(f"{filename} に日付情報がありません")
-
-        if c == 0:
-            messagebox.showerror("エラー", "選択されたフォルダーには適切なJPGファイルがありません。")
-        return errors
-
-    def rename_files(self):
-        c = 1
-        errors = []
-
-        for filename in tqdm(Path(self.folder_path).glob("*.JPG"), desc="ファイル名変更中"):
-            try:
-                # Get EXIF data and format the date string
-                exif = self.get_exif_of_image(filename)
-                date_str = exif["DateTime"].replace(":", "").replace(" ", "_")
-
-                new_name = os.path.join(
-                    os.path.dirname(filename),
-                    f"{os.path.basename(self.folder_path)}_{c}_{date_str}.JPG"
-                )
-
-                os.rename(filename, new_name)
-                c += 1
-
-            except Exception as e:
-                errors.append(f"{filename} の名前変更エラー: {str(e)}")
-
-        return errors
 
     def get_exif_of_image(self, filepath):
         try:

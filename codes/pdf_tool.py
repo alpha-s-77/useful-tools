@@ -30,7 +30,7 @@ class PDFTool:
         self.user_pass_entry = tk.Entry(self.root, show="*", width=30, font=("Arial", 12))
         self.user_pass_entry.pack(pady=5)
 
-        tk.Label(self.root, text="USER パスワード確認:", font=("Arial", 12)).pack(pady=5)
+        tk.Label(self.root, text="(暗号化のみ) USER パスワード確認:", font=("Arial", 12)).pack(pady=5)
         self.confirm_user_pass_entry = tk.Entry(self.root, show="*", width=30, font=("Arial", 12))
         self.confirm_user_pass_entry.pack(pady=5)
 
@@ -39,7 +39,7 @@ class PDFTool:
                                    font=("Arial", 12), bg="#28a745", fg="white", relief=tk.FLAT)
         encrypt_button.pack(pady=10)
 
-        decrypt_button = tk.Button(self.root, text="復号", command=self.decrypt_button_clicked,
+        decrypt_button = tk.Button(self.root, text=" 復号 ", command=self.decrypt_button_clicked,
                                    font=("Arial", 12), bg="#ffc107", fg="black", relief=tk.FLAT)
         decrypt_button.pack(pady=10)
 
@@ -58,7 +58,7 @@ class PDFTool:
             self.hukugo(file_paths)
 
     def select_files(self):
-        file_paths = filedialog.askopenfilenames(filetypes=[("PDF files", "*.pdf")])
+        file_paths = filedialog.askopenfilenames(filetypes=[("PDF files", "*.pdf;*.PDF;*.PdF;*.pDf;*.pdF;*.PDf;*.pDF;*.PdF")])
         return file_paths
 
     def ango(self, file_paths):
@@ -74,7 +74,7 @@ class PDFTool:
             for file_path in file_paths:
                 if not self.pdf_is_encrypted(file_path):
                     doc = fitz.open(file_path)
-                    output_path = os.path.join(os.path.dirname(file_path), os.path.basename(file_path).replace(".pdf", "_encrypted.pdf"))
+                    output_path = os.path.join(os.path.dirname(file_path), os.path.basename(file_path).rsplit('.', 1)[0] + "_encrypted.pdf")
                     doc.save(output_path, user_pw=up, encryption=fitz.PDF_ENCRYPT_AES_256, permissions=fitz.PDF_PERM_ACCESSIBILITY)
                     self.update_message(f"{os.path.basename(file_path)} を暗号化しました", "green")
                 else:
@@ -96,7 +96,7 @@ class PDFTool:
             if self.pdf_is_encrypted(file_path):
                 pdf = fitz.open(file_path)
                 if pdf.authenticate(pw):
-                    output_path = os.path.join(os.path.dirname(file_path), os.path.basename(file_path).replace(".pdf", "_decrypted.pdf"))
+                    output_path = os.path.join(os.path.dirname(file_path), os.path.basename(file_path).rsplit('.', 1)[0] + "_decrypted.pdf")
                     pdf.save(output_path)
                     self.update_message(f"{os.path.basename(file_path)} を復号しました", "green")
                 else:

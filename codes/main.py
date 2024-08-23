@@ -1,6 +1,7 @@
 import tkinter as tk
 from pdf_tool import PDFTool
 from jpg_tool import JPGTool
+import subprocess
 
 class MainApp:
     def __init__(self, root):
@@ -8,7 +9,7 @@ class MainApp:
         self.root.title("ツール選択画面")
         self.root.geometry("400x300")
         self.root.protocol("WM_DELETE_WINDOW", self.on_exit)  # Handle the close button
-
+        self.root.state('zoomed')
         self.show_home_screen()
 
     def show_home_screen(self):
@@ -33,7 +34,14 @@ class MainApp:
         # Exit Button with modern styling
         exit_button = tk.Button(self.root, text="終了", command=self.on_exit,
                                 font=("Arial", 14), bg="#dc3545", fg="white", relief=tk.FLAT)
-        exit_button.pack(pady=20)
+
+        # Explanation Button with modern styling
+        explanation_button = tk.Button(self.root, text="取扱説明書", command=self.explanation,
+                                       font=("Arial", 14), bg="#30B76E", fg="white", relief=tk.FLAT)
+
+        # Place the buttons at the bottom-right corner
+        explanation_button.place(relx=0.75, rely=0.9, anchor="center")
+        exit_button.place(relx=0.9, rely=0.9, anchor="center")
 
     def open_pdf_tool(self):
         # Open PDF Tool without closing the window
@@ -45,6 +53,10 @@ class MainApp:
 
     def on_exit(self):
         self.root.quit()  # Safely exit the application
+
+    def explanation(self):
+        cmd = 'start .\\explanation\\explanation.html'
+        returncode = subprocess.Popen(cmd, shell=True)
 
 if __name__ == "__main__":
     root = tk.Tk()
